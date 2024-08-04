@@ -34,6 +34,7 @@ def main() -> None:
     hp = 92
     is_attacking = False  # 攻撃を受けている状態かどうか
     bone_moves = []  # 攻撃を仕掛けてくる bone の攻撃先座標のリスト
+    kakudo = 0
     game_mode = 1  # 1ならプレイ中、0ならゲームオーバー
     attack_caution = pygame.image.load(f"{IMAGE_ROOT}/red.jpg")  # 赤長方形
     fight_image = pygame.image.load(f"{IMAGE_ROOT}/fight.png")
@@ -200,14 +201,14 @@ def main() -> None:
             if is_attacking:
                 if bone_moves:
                     attack_xy = bone_moves.pop(0)
-                    is_dameged1 = update_bone_view(screen, *attack_xy, heart_x, heart_y)
+                    is_dameged1 = update_bone_view(screen, *attack_xy, heart_x, heart_y,kakudo)
                     if is_dameged1:
                         hp -= 9
                         is_attacking = False
                 else:
                     is_attacking = False
             else:
-                bone_moves = generate_bone_view(heart_x, heart_y)
+                kakudo,bone_moves = generate_bone_view(heart_x, heart_y)
                 is_attacking = True
 
         if hp <= 0:

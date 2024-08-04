@@ -130,7 +130,7 @@ def update_constant_view(screen: pygame.Surface, hp) -> None:
     ui4 = font3.render("KR", True, WHITE, BLACK)
     ui5 = font2.render(f"{hp} / 92", True, WHITE, BLACK)
 
-    screen.blit(ui1, (145, 625))
+    screen.blit(ui1, (145, 625))#625
     screen.blit(ui2, (258, 620))
     screen.blit(ui3, (390, 625))
     screen.blit(ui4, (660, 625))
@@ -219,6 +219,7 @@ def generate_bone_view(heart_x, heart_y):
     sans_attack_Y = 0
     sans_attack_path = []
     kakudo = 0
+    tan = 0
     while True:
         sans_attack_X = random.randint(250, 820)
         sans_attack_Y = random.randint(360, 600)
@@ -237,14 +238,34 @@ def generate_bone_view(heart_x, heart_y):
         sans_attack_X += sans_attack_x_movespeed
         sans_attack_Y += sans_attack_y_movespeed
         sans_attack_path += [(sans_attack_X, sans_attack_Y)]
+
+    if sans_attack_X > heart_x and sans_attack_Y < heart_y:
+        tan = (heart_y - sans_attack_Y) / (sans_attack_X - heart_x)
+        kakudo = (math.degrees(math.atan(tan)))#tanは+/+で+、tan式は(b-y/x-a)、角度は270-tanθ
+        kakudo = 270 - round(kakudo)
+
+    if sans_attack_X < heart_x and sans_attack_Y > heart_y:
+        tan = (heart_y - sans_attack_Y) / (sans_attack_X - heart_x)
+        kakudo = (math.degrees(math.atan(tan)))#tanは-/-で+、tan式は(b-y/x-a)、角度は90-tanθ
+        kakudo = 90 - round(kakudo)
+
+
+    if sans_attack_X > heart_x and sans_attack_Y > heart_y:
+        tan = (heart_x - sans_attack_X) / (heart_y - sans_attack_Y)
+        kakudo = (math.degrees(math.atan(tan)))#tanは-/-で+、tan式は(a-x/b-y)、角度は360-tanθ
+        kakudo = 360 - round(kakudo)
+
+
+    if sans_attack_X < heart_x and sans_attack_Y < heart_y:
+        tan = (heart_x - sans_attack_X) / (heart_y - sans_attack_Y)
+        kakudo = (math.degrees(math.atan(tan)))#tanは+/+で+、tan式は(a-x/b-y)、角度は180-tanθ
+        kakudo = 180 - round(kakudo)
     
-    kakudo = math.atan2(sans_attack_Y - heart_y,sans_attack_X - heart_x)
-    print(kakudo)
-    return sans_attack_path
+    return kakudo,sans_attack_path
 
 
 def update_bone_view(
-    screen: pygame.Surface, sans_attack_X, sans_attack_Y, heart_x, heart_y
+    screen: pygame.Surface, sans_attack_X, sans_attack_Y, heart_x, heart_y,kakudo
 ):
     is_dameged1 = 0  # ０ならダメージ食らわない1ならくらくらう
     pygame.image.load(f"{IMAGE_ROOT}/attack_singlebone.png")
@@ -252,7 +273,8 @@ def update_bone_view(
     pygame.image.load(f"{IMAGE_ROOT}/attack_orangebone.png")
     attack_knifebone_image = pygame.image.load(f"{IMAGE_ROOT}/attack_knifebone.png")
 
-    screen.blit(attack_knifebone_image, (sans_attack_X, sans_attack_Y))
+    rotated_image = pygame.transform.rotate(attack_knifebone_image, kakudo)
+    screen.blit(rotated_image, (sans_attack_X, sans_attack_Y))
     if (
         sans_attack_X - 6 <= heart_x <= sans_attack_X + 6
         and sans_attack_Y - 18 <= heart_y <= sans_attack_Y + 60
