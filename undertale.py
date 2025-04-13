@@ -223,7 +223,7 @@ def main() -> None:
                     pygame.display.set_mode((1200, 1000), pygame.FULLSCREEN)
                 if event.key == pygame.K_F2 or event.key == pygame.K_ESCAPE:
                     screen = pygame.display.set_mode((640, 360))
-                if event.key == pygame.K_F3 and game_mode == 0:
+                if event.key == pygame.K_F3:
                     pygame.quit()
                     sys.exit()
 

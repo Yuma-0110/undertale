@@ -216,7 +216,7 @@ def update_blue_heart(
 
 
 def generate_bone_view(heart_x, heart_y):
-    while True:
+    """while True:
         sans_attack_X = random.randint(250, 820)
         sans_attack_Y = random.randint(360, 600)
         if (sans_attack_X < heart_x - 90 or sans_attack_X > heart_x + 90) and \
@@ -247,8 +247,8 @@ def generate_bone_view(heart_x, heart_y):
         sans_attack_Y += sans_attack_y_movespeed
         sans_attack_path.append((sans_attack_X, sans_attack_Y))
 
-    return(angle,sans_attack_path)
-    """sans_attack_X = 0
+    return(angle,sans_attack_path)"""
+    sans_attack_X = 0
     sans_attack_Y = 0
     katamuki = 0
     sans_attack_path = []
@@ -300,7 +300,7 @@ def generate_bone_view(heart_x, heart_y):
         kakudo = math.degrees(math.atan(tan))#tanは+/+で+、tan式は(a-x/b-y)、角度は180-tanθ
         kakudo = 180 - round(kakudo)
     
-    return kakudo,sans_attack_path"""
+    return kakudo,sans_attack_path
 
 
 def update_bone_view(
